@@ -17,9 +17,9 @@ namespace dataStructures
     {
         public:
             // default constructor initializes array with default capacity
-            dynamicArray()
+            dynamicArray() : dynamicArray(default_array_capacity)
             {
-                this(default_array_capacity);
+                
             }
             // initializes array with specified capacity
             dynamicArray(unsigned int s){
@@ -79,10 +79,10 @@ namespace dataStructures
             }
 
         private:
-            T arr[];
+            
             unsigned int size;
             unsigned int capacity;
-
+            T* arr;
             // Capacity isn't changed at every deletion.
             // it is reduced once size falls under half capacity.
             void trimCapacity()
@@ -101,13 +101,13 @@ namespace dataStructures
                 }
 
                 if(newCapacity != this->capacity){
-                    T newarr[];
+                    T* newarr;
                     newarr = new T[newCapacity];
                     for(unsigned int i=0; i<this->getSize();i++){
                         newarr[i]=this->arr[i];
                     }
                     //swap array
-                    delete[] this->arr;
+                    delete this->arr;
                     this->arr=newarr;
                     this->capacity=newCapacity;
                 }
@@ -128,13 +128,13 @@ namespace dataStructures
                 }
 
                 if(newCapacity != this->capacity){
-                    T newarr[];
+                    T* newarr;
                     newarr = new T[newCapacity];
                     for(unsigned int i=0; i<this->size();i++){
                         newarr[i]=this->arr[i];
                     }
                     //swap array
-                    delete[] this->arr;
+                    delete this->arr;
                     this->arr=newarr;
                     this->capacity=newCapacity;
                 }
