@@ -22,7 +22,7 @@ In the container terminal:
     cmake --build .
     ctest
 ```
-Last command swil execute unit tests:
+Last command will execute unit tests:
 <p align="center">
   <img src="./img/test.JPG" alt="Unit Test Output" width="650">
 </p>
