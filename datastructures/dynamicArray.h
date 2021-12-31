@@ -1,5 +1,5 @@
 /**
- * A generic dynamic array implementation based on 
+ * A generic dynamic array implementation loosely follows
  * https://youtu.be/tvw4v7FEF1w 
  * stylistically follows std::vector 
  */
@@ -30,10 +30,10 @@ namespace dataStructures
             //removes element at given index. Returns false if failed to remove.
             bool removeAt(unsigned int s)
             {
-                if(s>=size()){
+                if(s>=this->getSize()){
                     return false;
                 }
-                for(unsigned int i=s+1;i<this->size(); i++){
+                for(unsigned int i=s+1;i<this->getSize(); i++){
                     this->arr[i-1]=this->arr[i];
                 }
                 --this->size;
@@ -43,7 +43,7 @@ namespace dataStructures
             ~dynamicArray(){
                 delete arr;
             }
-            unsigned int size()
+            unsigned int getSize()
             {
                 return size; 
             }
@@ -51,10 +51,10 @@ namespace dataStructures
             // returns false if 
             bool insertBack(T val)
             {
-                return this->insertAt(this->size(), val);
+                return this->insertAt(this->getSize(), val);
             }
             bool removeBack(){
-                return this->removeAt(this->size());
+                return this->removeAt(this->getSize());
             }
             bool insertAt(unsigned int j, T val){
                 // will only up capacity if needed
@@ -63,7 +63,7 @@ namespace dataStructures
                 }
                 this->upCapacity();
 
-                for(unsigned int i=j; j<this->size();j++ )
+                for(unsigned int i=j; j<this->getSize();j++ )
                 {
                     this->arr[i+1]=this->arr[i];
                 }
@@ -72,7 +72,8 @@ namespace dataStructures
                 return true;
             }
 
-            clear(){
+            void clear()
+            {
                  this->size=0;
                  this->trimCapacity();
             }
@@ -100,12 +101,13 @@ namespace dataStructures
                 }
 
                 if(newCapacity != this->capacity){
-                    T newarr[] = new(newCapacity);
-                    for(unsigned int i=0; i<this->size();i++){
+                    T newarr[];
+                    newarr = new T[newCapacity];
+                    for(unsigned int i=0; i<this->getSize();i++){
                         newarr[i]=this->arr[i];
                     }
                     //swap array
-                    delete(this->arr);
+                    delete[] this->arr;
                     this->arr=newarr;
                     this->capacity=newCapacity;
                 }
@@ -126,18 +128,19 @@ namespace dataStructures
                 }
 
                 if(newCapacity != this->capacity){
-                    T newarr[] = new(newCapacity);
+                    T newarr[];
+                    newarr = new T[newCapacity];
                     for(unsigned int i=0; i<this->size();i++){
                         newarr[i]=this->arr[i];
                     }
                     //swap array
-                    delete(this->arr);
+                    delete[] this->arr;
                     this->arr=newarr;
                     this->capacity=newCapacity;
                 }
                 return;                
             }
-    } 
+    }; 
 }
 
 #endif
