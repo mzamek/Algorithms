@@ -1,6 +1,7 @@
 # Algorithms & Data Structures Project with VSCode/Docker, CMake and Googletest
 I setup this repo to practice programming in modern C++. It is currently WIP. Some of the features this repo will include are:
 - Data Structures
+- Sorting
 - Dynamic Programming Problems
 - NP-Complete Problems
 - C++ Features
