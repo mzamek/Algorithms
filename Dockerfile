@@ -20,7 +20,7 @@ COPY . /usr/src/myapp
 WORKDIR /usr/src/myapp
 
 # This command compiles your app using GCC, adjust for your source code
-RUN g++ -o myapp main.cpp
+# RUN g++ -o myapp main.cpp
 
 # This command runs your application, comment out this line to compile only
 CMD ["./myapp"]

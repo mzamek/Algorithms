@@ -7,6 +7,7 @@
 #define DYNAMIC_ARRAY_H
 #include <cstdint>
 #include<climits>
+#include<stdexcept>
 namespace dataStructures
 {
     unsigned const default_array_capacity = 16;
@@ -25,7 +26,16 @@ namespace dataStructures
             dynamicArray(unsigned int s){
                 this->size=0;
                 this->capacity=s;
-                arr = new T(s);
+                arr = new T[s];
+            }
+
+            T& operator[](unsigned int index)
+            {
+                if(index >= this->getSize())
+                {
+                    throw std::out_of_range("index out of bounds");
+                }
+                return arr[index];
             }
             //removes element at given index. Returns false if failed to remove.
             bool removeAt(unsigned int s)
@@ -54,11 +64,11 @@ namespace dataStructures
                 return this->insertAt(this->getSize(), val);
             }
             bool removeBack(){
-                return this->removeAt(this->getSize());
+                return this->removeAt(this->getSize()-1);
             }
             bool insertAt(unsigned int j, T val){
                 // will only up capacity if needed
-                if(this->size()==UINT_MAX){
+                if(this->getSize()==USHRT_MAX){
                     return false;
                 }
                 this->upCapacity();
@@ -80,8 +90,8 @@ namespace dataStructures
 
         private:
             
-            unsigned int size;
-            unsigned int capacity;
+            unsigned short size;
+            unsigned short capacity;
             T* arr;
             // Capacity isn't changed at every deletion.
             // it is reduced once size falls under half capacity.
@@ -92,9 +102,9 @@ namespace dataStructures
                 if(size <= default_array_capacity/2)
                 {
                     newCapacity=default_array_capacity;
-                } else if(size >= UINT_MAX/2 ) // don't overflow
+                } else if(size >= USHRT_MAX/2 ) // don't overflow
                 {
-                    newCapacity=UINT_MAX;
+                    newCapacity=USHRT_MAX;
                 } else if(this->capacity> (this->size<<1))
                 {
                     newCapacity=this->size;
@@ -119,9 +129,9 @@ namespace dataStructures
             {
                 unsigned int newCapacity=this->capacity;
                 // check if capacity falls below minimum
-                if(size >= (UINT_MAX/2)-1 ) // don't overflow
+                if(size >= (USHRT_MAX/2)-1 ) // don't overflow
                 {
-                    newCapacity=UINT_MAX;
+                    newCapacity=USHRT_MAX;
                 } else if(size+1>this->capacity)
                 {
                     newCapacity=this->capacity<<2;
@@ -130,7 +140,7 @@ namespace dataStructures
                 if(newCapacity != this->capacity){
                     T* newarr;
                     newarr = new T[newCapacity];
-                    for(unsigned int i=0; i<this->size();i++){
+                    for(unsigned int i=0; i<this->getSize();i++){
                         newarr[i]=this->arr[i];
                     }
                     //swap array
