@@ -2,6 +2,7 @@
 I setup this repo to practice programming in modern C++. It is currently WIP. Some of the features this repo will include are:
 - Data Structures
 - Sorting
+- Path-finding
 - Dynamic Programming Problems
 - NP-Complete Problems
 - C++ Features
