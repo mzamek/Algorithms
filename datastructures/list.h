@@ -16,6 +16,23 @@ namespace dataStructures
     template<class N>
     class list {
         public:
+            N& operator[](unsigned int index)
+            {
+                node<N>* tmp=head;
+                if(head==nullptr)
+                {
+                    throw std::out_of_range("index out of bounds");
+                } else {
+                    
+                    for(int i=0;i<index;i++){
+                        tmp=tmp->next;
+                        if(tmp==nullptr){
+                            throw std::out_of_range("index out of bounds");
+                        }
+                    }
+                }
+                return tmp->value;
+            }
             node<N>* head;
             list(): head(nullptr) {}
             list(const N& data) {
@@ -81,8 +98,8 @@ namespace dataStructures
                     delete head;
                     head=nullptr;
                 } else {
-                    node<N>* tmp;
-                    while(tmp->next!=nullptr){
+                    node<N>* tmp=head;
+                    while(tmp->next->next!=nullptr){
                         tmp=tmp->next;
                     }
                     delete tmp->next;

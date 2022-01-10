@@ -32,3 +32,14 @@ target_link_libraries(
 
 include(GoogleTest)
 gtest_discover_tests(dynamicArrayTest)
+
+add_executable(
+  listTest
+  googletest/listTest.cpp
+)
+target_link_libraries(
+  listTest
+  gtest_main
+)
+
+gtest_discover_tests(listTest)
