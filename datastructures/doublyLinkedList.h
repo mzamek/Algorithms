@@ -1,0 +1,174 @@
+// Doubly Linked list - modern C++ implementation
+#ifndef DOUBLY_LINED_LIST_H
+#define DOUBLY_LINED_LIST_H
+#include<stdexcept>
+
+namespace dataStructures
+{
+    template <typename T>
+    class node
+    {
+        public:
+            T value;
+            node<T>* next;
+            node<T>* last;
+            node() : next(nullptr), last(nullptr) {}
+            node(const T& val) : next(nullptr), last(nullptr), value(val) {}
+        
+    };
+
+    template <typename T>
+    class doublyLinkedList
+    {
+        private:
+
+            size_t _size;
+        public:
+            node<T>* head;
+            node<T>* tail;
+            doublyLinkedList() : head(nullptr), tail(nullptr), _size(0) {}
+            doublyLinkedList(const T& val) : head(nullptr), tail(nullptr), _size(0) 
+            {
+                push_front(val);
+            }
+            doublyLinkedList(T&& val) : head(nullptr), tail(nullptr), _size(0) 
+            {
+                node<T>* tmp = new node<T>();
+                tmp->value=std::move(val);
+                tmp->next=head;
+                if(head!=nullptr){
+                    head->next->last=tmp;
+                } else {
+                    tail=tmp;
+                }
+                head=tmp;
+                _size++;
+            }
+            T& operator[](size_t index)
+            {
+                node<T>* tmp=head;
+                if(head==nullptr)
+                {
+                    throw std::out_of_range("index out of bounds");
+                } else {
+                    
+                    for(int i=0;i<index;i++){
+                        tmp=tmp->next;
+                        if(tmp==nullptr){
+                            throw std::out_of_range("index out of bounds");
+                        }
+                    }
+                }
+                return tmp->value;
+            }
+
+            void push_front(const T& val)
+            {
+                node<T>* tmp = new node<T>(val);
+                tmp->next=head;
+                if(head!=nullptr){
+                    head->next->last=tmp;
+                } else {
+                    tail=tmp;
+                }
+                head=tmp;
+                _size++;
+            }
+            void push_back(const T& val)
+            {
+                node<T>* tmp = new node<T>(val);
+                tmp->last=tail;
+                if(tail==nullptr){
+                    head=tmp;
+                } else {
+                    tail->last->next=tmp;
+                }
+                tail=tmp;
+                _size++;
+            }
+            void pop_front()
+            {
+                if(head!=nullptr){
+                    node<T>* tmp=head;
+                    if(head==tail)
+                    {
+                        head=nullptr;
+                        tail=nullptr;
+                    } else {
+                        head=head->next;
+                        head->next->last=head;
+                    }
+                    delete tmp;
+                    _size--;
+                }
+            }
+            void pop_back()
+            {
+                if(tail!=nullptr){
+                    node<T>* tmp = tail;
+                    if(tail==head){
+                        tail=nullptr;
+                        head=nullptr;
+                    } else {
+                        tail=tail->last;
+                        tail->last->next=tail;
+                    }
+                    delete tmp;
+                    _size--;
+                }
+            }
+            void clear()
+            {
+                while(size()>0)
+                {
+                    pop_front();
+                }
+            }
+            size_t size()
+            {
+                return _size;
+            }
+
+            void erase(const size_t p){
+                if(p>=size()){
+                    throw std::out_of_range("doublyLinkedList delete out of range");
+                } else if(p==0){
+                    pop_front();
+                } else if(p==size-1){
+                    pop_back();
+                } else {
+                    node<T>* n=head;
+                    for(int i=0;i<p;i++){
+                        n=n->next;
+                    }
+                    n->next->last=n->last;
+                    n->last->next=n->next;
+                    delete n;
+                    _size--;
+                }
+            }
+            //inserts after element starfting at 0;
+            void insert(const size_t p, const T& val){
+                if(p>size()){
+                    throw std::out_of_range("insert out of range");
+                } else {
+                    if(p==0){
+                        insert_front(val);
+                    } else if(p==size()){
+                        insert_back(val);
+                    } else {
+                        node<T>* tmp = new node<T>(val);
+                        tmp->last=head;
+                        for(int i=0;i<p;i++){
+                            tmp->last=tmp->last->next;
+                        }
+                        tmp->next=tmp->last->next;
+                        tmp->last->next=tmp;
+                        tmp->next->last=tmp;
+                        _size++;
+                    }
+                }
+            }
+    };
+}
+#endif

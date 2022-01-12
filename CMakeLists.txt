@@ -43,3 +43,14 @@ target_link_libraries(
 )
 
 gtest_discover_tests(listTest)
+
+add_executable(
+  doublyLinkedListTest
+  googletest/doublyLinkedListTest.cpp
+)
+target_link_libraries(
+  doublyLinkedListTest
+  gtest_main
+)
+
+gtest_discover_tests(doublyLinkedListTest)
