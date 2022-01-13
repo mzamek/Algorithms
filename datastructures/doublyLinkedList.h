@@ -65,11 +65,11 @@ namespace dataStructures
             void push_front(const T& val)
             {
                 node<T>* tmp = new node<T>(val);
-                tmp->next=head;
-                if(head!=nullptr){
-                    head->next->last=tmp;
-                } else {
+                if(head==nullptr){
                     tail=tmp;
+                } else {
+                    head->last=tmp;
+                    tmp->next=head;
                 }
                 head=tmp;
                 _size++;
@@ -77,11 +77,11 @@ namespace dataStructures
             void push_back(const T& val)
             {
                 node<T>* tmp = new node<T>(val);
-                tmp->last=tail;
                 if(tail==nullptr){
                     head=tmp;
                 } else {
-                    tail->last->next=tmp;
+                    tmp->last=tail;
+                    tmp->last->next=tmp;
                 }
                 tail=tmp;
                 _size++;
@@ -96,7 +96,7 @@ namespace dataStructures
                         tail=nullptr;
                     } else {
                         head=head->next;
-                        head->next->last=head;
+                        head->last=nullptr;
                     }
                     delete tmp;
                     _size--;
@@ -111,7 +111,7 @@ namespace dataStructures
                         head=nullptr;
                     } else {
                         tail=tail->last;
-                        tail->last->next=tail;
+                        tail->next=nullptr;
                     }
                     delete tmp;
                     _size--;
@@ -134,7 +134,7 @@ namespace dataStructures
                     throw std::out_of_range("doublyLinkedList delete out of range");
                 } else if(p==0){
                     pop_front();
-                } else if(p==size-1){
+                } else if(p==size()-1){
                     pop_back();
                 } else {
                     node<T>* n=head;
@@ -153,18 +153,20 @@ namespace dataStructures
                     throw std::out_of_range("insert out of range");
                 } else {
                     if(p==0){
-                        insert_front(val);
+                        push_front(val);
                     } else if(p==size()){
-                        insert_back(val);
+                        push_back(val);
                     } else {
-                        node<T>* tmp = new node<T>(val);
-                        tmp->last=head;
+                        node<T>* newNode = new node<T>(val);
+                        node<T>* insertAt=head;
                         for(int i=0;i<p;i++){
-                            tmp->last=tmp->last->next;
+                            insertAt=insertAt->next;
                         }
-                        tmp->next=tmp->last->next;
-                        tmp->last->next=tmp;
-                        tmp->next->last=tmp;
+
+                        newNode->next=insertAt;
+                        newNode->last=insertAt->last;
+                        newNode->next->last=newNode;
+                        newNode->last->next=newNode;
                         _size++;
                     }
                 }
